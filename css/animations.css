@@ -1,6 +1,5 @@
 /* --- المؤثرات الحركية والألوان التفاعلية --- */
 
-/* تأثير تحديد الحروف أثناء السحب */
 .grid-cell.highlighted {
     background-color: var(--highlight-color);
     transform: scale(1.1);
@@ -9,40 +8,38 @@
     transition: all 0.1s ease;
 }
 
-/* تأثير الكلمة المكتشفة (الشطب) */
 .grid-cell.found-cell {
-    background-color: #a8d5ba; /* لون أخضر باهت ومريح */
+    background-color: #a8d5ba;
     color: #1a4a2c;
-    border-radius: 50%; /* شكل دائري كلاسيكي */
+    border-radius: 50%;
     transform: scale(0.95);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* تأثير التلاشي السحري للأحرف الزائدة (الابتكار الجديد) */
 .grid-cell.fade-out {
     opacity: 0.1;
     transform: scale(0.8);
     transition: all 1s ease;
 }
 
-/* تأثير إضاءة كلمة السر في النهاية */
+/* تأثير إضاءة كلمة السر في النهاية (تم الإصلاح ليكون أنيقاً ومتماسكاً) */
 .grid-cell.secret-reveal {
     background-color: #ffd700;
     color: #000;
-    font-size: 1.8rem;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    font-size: 1.3rem; /* تصغير الخط لتفادي التداخل */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
     animation: pulse 1.5s infinite;
     z-index: 5;
+    position: relative; /* يمنع خروج المربع عن مساره */
 }
 
 @keyframes pulse {
     0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+    50% { transform: scale(1.05); } /* تكبير ناعم جداً */
     100% { transform: scale(1); }
 }
 
-/* تأثير المساعدة (Hint) */
 .grid-cell.hint-anim {
     animation: shakeHint 0.5s ease-in-out 3;
     background-color: #ffcccc;

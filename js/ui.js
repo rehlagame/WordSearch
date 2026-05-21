@@ -13,7 +13,6 @@ class GameUI {
 
     renderGrid() {
         this.container.innerHTML = '';
-        // تحديث متغير CSS ليناسب حجم الشبكة
         this.container.style.setProperty('--grid-size', this.engine.size);
 
         for (let r = 0; r < this.engine.size; r++) {
@@ -37,17 +36,16 @@ class GameUI {
             this.wordListEl.appendChild(li);
         });
         document.getElementById('secret-clue').textContent = "اللغز: " + this.engine.secretWordObj.clue;
+        document.getElementById('secret-word-display').textContent = ''; // إفراغ الكلمة عند بدء لعبة جديدة
     }
 
     setupEventListeners() {
-        // دعم الماوس (للكمبيوتر)
         this.container.addEventListener('mousedown', (e) => this.handleStart(e.target));
         document.addEventListener('mousemove', (e) => this.handleMove(e.clientX, e.clientY));
         document.addEventListener('mouseup', () => this.handleEnd());
 
-        // دعم اللمس (للآيفون والتابلت)
         this.container.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // منع نزول الشاشة
+            e.preventDefault();
             this.handleStart(e.touches[0].target);
         }, { passive: false });
 
@@ -76,7 +74,6 @@ class GameUI {
     }
 
     highlightCells(startNode, endNode) {
-        // إزالة التحديد السابق
         document.querySelectorAll('.highlighted').forEach(el => el.classList.remove('highlighted'));
         this.currentSelection = [];
 
@@ -95,7 +92,6 @@ class GameUI {
             return;
         }
 
-        // التأكد أن السحب في خط مستقيم (أفقي، عمودي، قطري)
         if (Math.abs(dr) === Math.abs(dc) || dr === 0 || dc === 0) {
             let stepR = dr / steps;
             let stepC = dc / steps;
@@ -116,14 +112,12 @@ class GameUI {
         if (!this.isDragging) return;
         this.isDragging = false;
 
-        // تجميع الكلمة من الخلايا المحددة
         let selectedWord = this.currentSelection.map(cell => cell.textContent).join('');
-        let reversedWord = selectedWord.split('').reverse().join(''); // فحص الاتجاهين
+        let reversedWord = selectedWord.split('').reverse().join('');
 
         let foundWord = this.engine.wordsToFind.find(w => w === selectedWord || w === reversedWord);
 
         if (foundWord) {
-            // هل تم إيجادها مسبقاً؟
             let listItem = document.querySelector(`li[data-word="${foundWord}"]`);
             if (!listItem.classList.contains('found')) {
                 listItem.classList.add('found');
@@ -136,7 +130,6 @@ class GameUI {
             }
         }
 
-        // إزالة التظليل الأصفر
         document.querySelectorAll('.highlighted').forEach(el => el.classList.remove('highlighted'));
         this.currentSelection = [];
     }
@@ -148,24 +141,26 @@ class GameUI {
     }
 
     revealSecretWord() {
-        // السحر: إخفاء كل الأحرف العشوائية!
         const allCells = document.querySelectorAll('.grid-cell');
         allCells.forEach(cell => {
             let r = parseInt(cell.dataset.r);
             let c = parseInt(cell.dataset.c);
 
-            // هل هذه الخلية جزء من كلمة السر؟
             let isSecret = this.engine.secretCoords.find(sc => sc.r === r && sc.c === c);
 
             if (isSecret) {
                 cell.classList.remove('found-cell');
                 cell.classList.add('secret-reveal');
             } else if (!cell.dataset.partOfWord) {
-                // تلاشي الأحرف التي لا معنى لها
                 cell.classList.add('fade-out');
             }
         });
 
-        alert("أحسنت! لقد شطبت جميع الكلمات.. اقرأ الأحرف المضيئة المتبقية لتعرف كلمة السر!");
+        // إظهار الكلمة أسفل الشاشة
+        document.getElementById('secret-word-display').textContent = this.engine.secretWordObj.word;
+
+        setTimeout(() => {
+            alert("أحسنت! كلمة السر هي: " + this.engine.secretWordObj.word);
+        }, 800);
     }
 }
