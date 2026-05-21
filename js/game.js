@@ -15,25 +15,36 @@ class GameEngine {
     generateGame(categoryName) {
         this.initGrid();
         const category = gameData.categories[categoryName];
-        this.wordsToFind = [...category.words];
+
+        // التقاطع الذكي: ترتيب الكلمات من الأطول إلى الأقصر
+        // هذا يجعل الكلمات الكبيرة تتمركز أولاً، وتتداخل معها الكلمات القصيرة بواقعية
+        this.wordsToFind = [...category.words].sort((a, b) => b.length - a.length);
         this.secretWordObj = category.secret;
 
         this.wordsToFind.forEach(word => this.placeWord(word));
         this.placeSecretWord(this.secretWordObj.word);
         this.fillEmptyCells();
+
+        // إعادة ترتيب القائمة أبجدياً أو عشوائياً للمستخدم حتى لا يلاحظ أنها مرتبة بالطول
+        this.wordsToFind.sort(() => Math.random() - 0.5);
     }
 
     placeWord(word) {
+        // الواقعية التامة: تفعيل جميع الاتجاهات الثمانية الممكنة في الجرائد
         const directions = [
-            { r: 0, c: -1 },
-            { r: 1, c: 0 },
-            { r: 1, c: -1 }
+            { r: 0, c: -1 }, // أفقي: يمين لليسار
+            { r: 0, c: 1 },  // أفقي معكوس: يسار لليمين (صعب)
+            { r: 1, c: 0 },  // عمودي: أعلى لأسفل
+            { r: -1, c: 0 }, // عمودي معكوس: أسفل لأعلى (صعب)
+            { r: 1, c: -1 }, // قطري: مائل لأسفل اليسار
+            { r: 1, c: 1 },  // قطري: مائل لأسفل اليمين
+            { r: -1, c: -1 },// قطري: مائل لأعلى اليسار (تحدي)
+            { r: -1, c: 1 }  // قطري: مائل لأعلى اليمين (تحدي)
         ];
 
         let placed = false;
         let attempts = 0;
 
-        // تم رفع المحاولات لـ 500 لضمان زرع كل الكلمات
         while (!placed && attempts < 500) {
             let dir = directions[Math.floor(Math.random() * directions.length)];
             let startRow = Math.floor(Math.random() * this.size);
@@ -58,7 +69,9 @@ class GameEngine {
         for (let i = 0; i < word.length; i++) {
             let r = row + (dir.r * i);
             let c = col + (dir.c * i);
+            // التأكد من البقاء داخل حدود الشبكة
             if (r < 0 || r >= this.size || c < 0 || c >= this.size) return false;
+            // السماح بالتقاطع فقط إذا كان الحرف مطابقاً
             if (this.grid[r][c] !== '' && this.grid[r][c] !== word[i]) return false;
         }
         return true;
@@ -68,7 +81,6 @@ class GameEngine {
         this.secretCoords = [];
         let secretIndex = 0;
 
-        // زرع أحرف كلمة السر بالترتيب لقراءتها بشكل طبيعي بعد الفوز
         for (let r = 0; r < this.size; r++) {
             for (let c = 0; c < this.size; c++) {
                 if (this.grid[r][c] === '' && secretIndex < secretWord.length) {
