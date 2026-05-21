@@ -1,0 +1,112 @@
+/* --- المتغيرات اللونية (طابع الجرائد القديمة) --- */
+:root {
+    --bg-color: #f4ebd8; /* لون ورق الجريدة */
+    --text-color: #2b2b2b; /* لون الحبر الكلاسيكي */
+    --highlight-color: rgba(255, 215, 0, 0.6); /* لون التحديد الفسفوري */
+    --border-color: #8c7b65; /* لون الفواصل */
+    --grid-size: 10; /* حجم الشبكة الافتراضي (سيتغير عبر الجافاسكريبت) */
+}
+
+/* --- الإعدادات العامة --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace; /* خط كلاسيكي مؤقت */
+    -webkit-tap-highlight-color: transparent; /* إزالة وميض اللمس في الهواتف */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* --- حاوية اللعبة (محاكاة شكل الآيفون/التابلت) --- */
+.game-container {
+    width: 100%;
+    max-width: 500px; /* حجم مناسب للتابلت والهواتف */
+    background: #fdf5e6;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--border-color);
+}
+
+/* --- الترويسة --- */
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px dashed var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* --- شبكة اللعبة (الجدول) --- */
+.grid-container {
+    display: grid;
+    /* التوزيع الديناميكي للأعمدة بناءً على حجم الشبكة */
+    grid-template-columns: repeat(var(--grid-size), 1fr);
+    gap: 2px;
+    background-color: var(--border-color);
+    border: 2px solid var(--border-color);
+    margin-bottom: 20px;
+    touch-action: none; /* لمنع تمرير الشاشة أثناء اللعب بالسحب */
+}
+
+.grid-cell {
+    background-color: #fdf5e6;
+    aspect-ratio: 1 / 1; /* لجعل المربع متساوي الأضلاع دائماً */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none; /* منع تحديد النص المزعج */
+}
+
+/* --- قائمة الكلمات --- */
+.word-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+.word-list li {
+    padding: 5px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.word-list li.found {
+    text-decoration: line-through;
+    opacity: 0.5;
+    background-color: var(--border-color);
+    color: var(--bg-color);
+}
+
+/* --- الأزرار --- */
+.controls {
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+}

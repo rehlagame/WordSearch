@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>لعبة كلمة السر الكلاسيكية</title>
+
+    <!-- ربط ملفات التصميم -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+<div class="game-container">
+    <!-- الترويسة -->
+    <header>
+        <h1>كلمة السر</h1>
+        <p id="category-title">الفئة: جاري التحميل...</p>
+    </header>
+
+    <!-- شبكة الحروف (الجدول) -->
+    <main>
+        <div id="grid-container" class="grid-container">
+            <!-- سيتم توليد المربعات هنا بواسطة جافاسكريبت -->
+        </div>
+
+        <!-- اللغز النهائي وكلمة السر -->
+        <div class="secret-word-section">
+            <p id="secret-clue">اللغز: يتم تحديده لاحقاً</p>
+            <div id="secret-word-display" class="secret-word-display">
+                <!-- أماكن فارغة لكلمة السر -->
+            </div>
+        </div>
+    </main>
+
+    <!-- قائمة الكلمات المطلوب شطبها -->
+    <footer>
+        <ul id="word-list" class="word-list">
+            <!-- سيتم توليد الكلمات هنا بواسطة جافاسكريبت -->
+        </ul>
+
+        <!-- أزرار التحكم -->
+        <div class="controls">
+            <button id="hint-btn" class="btn">مساعدة 💡</button>
+            <button id="new-game-btn" class="btn">لعبة جديدة 🔄</button>
+        </div>
+    </footer>
+</div>
+
+<!-- ربط ملفات البرمجة (الترتيب مهم جداً) -->
+<script src="js/words.js"></script>
+<script src="js/game.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
